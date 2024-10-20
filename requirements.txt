@@ -3,3 +3,8 @@ string
 re
 pandas
 Levenshtein
+unstructured
+faiss-cpu
+langchain
+langchain-openai
+python-dotenv
