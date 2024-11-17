@@ -43,7 +43,7 @@ This repository provides a framework for building a Persian-language chatbot wit
 
 3. Ensure the `.env` file is set up with the necessary credentials (e.g., OpenAI API key).
 
-4. Prepare context files for the chatbot to use as background information for answering questions. Save these files in a folder named `datasets` (e.g., `datasets/Q&A.txt` and `datasets/WSS.txt`).
+4. Prepare context files for the chatbot to use as background information for answering questions. Save these files in a folder named `datasets` (e.g., `datasets/QA.txt` and `datasets/dataset.txt`).
 
 ## Usage
 
@@ -62,7 +62,7 @@ The chatbot will load context data from specified files, allowing it to answer q
   from ChatBot.ChatBot import Chat
 
   chat = Chat()
-  user_input = "What is WSS?"
+  user_input = "What is Abriment"
   response = chat.chat(user="user1", message=user_input)
   print(response)  # Outputs the chatbot's response based on available context
   ```
