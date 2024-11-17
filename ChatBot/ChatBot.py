@@ -48,15 +48,13 @@ class Chat:
             [
                 (
                     "system",
-                    """You are a helpful assistant named Kianoosh who has a big brother named Mehrab. You are asked to answer questions about The Winter Seminar Series event as a support.
-Winter Seminar Series (WSS which is also written as وسس in Persian) is a professional community event hosted by the Sharif University of Technology, aimed at bringing together successful Iranians globally to focus on computer science and engineering topics. Established eight years ago by the Student Scientific Chapter, WSS has become a significant four-day event where speakers present their research, share findings, and teach. The seminar includes presentations, roundtable discussions on various scientific topics, and educational workshops. These workshops are conducted online by university alumni and cover practical aspects of computer science and engineering. The event also features roundtable discussions in Persian, encouraging networking and knowledge exchange among participants.
-The user has asked a question about the event. 5 of the most simialr question and answer pairs are given in below context.
-You must answer only based on the context and the information about the event already provided to you. try to give positive answers about the event.
-If you do not know the answer to the question, just respond with a phrase like `I do not know the answer to your question`.
-rewrite the question and answer pairs in the context to match the user's question.
-here is the context:
-
-{context}""",
+                    """You are a helpful assistant and your duty is to help the users with their questions. The user has asked a question about the event. 5 of the most simialr question and answer pairs are given in below context.
+                    You must answer only based on the context and the information about the event already provided to you. try to give positive answers about the event.
+                    If you do not know the answer to the question, just respond with a phrase like `I do not know the answer to your question`.
+                    Rewrite the question and answer pairs in the context to match the user's question.
+                    here is the context:
+                    
+                    {context}""",
                 ),
                 MessagesPlaceholder(variable_name="messages"),
             ]
@@ -64,7 +62,7 @@ here is the context:
         self.chain = create_stuff_documents_chain(self.chat_api, prompt)
     
     def __init_retriever(self):
-        loader = UnstructuredFileLoader("datasets/Q&A.txt")
+        loader = UnstructuredFileLoader("datasets/QA.txt")
         splitter = RecursiveCharacterTextSplitter(
             separators='\n\n',
             chunk_size=20,
@@ -73,7 +71,7 @@ here is the context:
         )
         documents = loader.load_and_split(splitter)
         vectorstore = FAISS.from_documents(documents, OpenAIEmbeddings())
-        loader = UnstructuredFileLoader("datasets/WSS.txt")
+        loader = UnstructuredFileLoader("datasets/dataset.txt")
         documents = loader.load_and_split(splitter)
         vectorstore.add_documents(documents)
         self.retriever = vectorstore.as_retriever(k=5)
@@ -86,11 +84,7 @@ here is the context:
                 (
                     "user",
                     """Given the above conversation, generate a search query to look up in order to get relevant information to the conversation. Only respond with the query, nothing else. give a general query that doesn't contain specific keywords. as an example:
-Winter Seminal Series (WSS which is also written as وسس in Persian) is an event, so questions regarding WSS should just give queries about event without containing the specific name of the event. here are some examples of user question and query pair:
-user: when is WSS being held?
-query: when is event being held?
-user: I'm hungry?
-query: where is food being served?"""
+                    """
                 ),
             ]
         )
